@@ -6,7 +6,7 @@ Final project for Consensus Blockchain Bootcamp
 
 This project provides a template for communities to come together, establish a common problem, and establish incentives for entrepreneurs to solve the problem.
 
-Inspired by Vitalik Buterin's talk: "Things that matter outside of defi" ([Link](https://github.com/lparvinsmith/blockchain-developer-bootcamp-final-project), July 21, 2021)
+Inspired by Vitalik Buterin's talk: "Things that matter outside of defi" ([Video](https://www.youtube.com/watch?v=oLsb7clrXMQ&t=308s), July 21, 2021)
 
 ### Why Retroactive Funding
 
