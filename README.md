@@ -8,8 +8,8 @@ Personal ETH Address for NFT: TODO
 [Retroactive public goods funding](#retroactive-public-goods-funding)
 [Directory structure](#directory-structure)
 [Running locally](#running-locally)
-[Design pattern decisions]()
-[Avoiding common attacks]()
+[Design pattern decisions](./design_pattern_decisions.md)
+[Avoiding common attacks](./avoiding_common_attacks.md)
 
 ## Retroactive Public Goods Funding
 
