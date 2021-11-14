@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.5.16;
 
+import "@openzeppelin/contracts/access/Roles.sol";
+
 contract RetroactiveFunding {
+    using Roles for Roles.Role;
+
+    Roles.Role private _admin;
+
     address public owner = msg.sender;
     uint256 buyin;
     bool voterRegistrationOpen;
@@ -9,37 +15,46 @@ contract RetroactiveFunding {
 
     struct candidate {
         address projectAddress;
-        address tokens;
         string title;
-        string description;
     }
 
     candidate[] public candidates;
     mapping(address => candidate) public voters;
 
     modifier onlyOwner() {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "is not owner");
+        _;
+    }
+
+    modifier onlyAdmin() {
+        require(_admin.has(msg.sender), "does not have admin role");
         _;
     }
 
     // fallback?
 
     // ADMIN
-    function setMinimumBuyin(uint256 amount) public onlyOwner {}
+    function setAdmin(address[] addresses) public onlyOwner {
+        for (uint256 i = 0; i < addresses.length; ++i) {
+            _admin.add(addresses[i]);
+        }
+    }
 
-    function setVoterRegistrationOpen() public onlyOwner {}
+    function setMinimumBuyin(uint256 amount) public onlyAdmin {}
 
-    function setVoterRegistrationClosed() public onlyOwner {}
+    function setVoterRegistrationOpen() public onlyAdmin {}
 
-    function setProjectSubmissionOpen() public onlyOwner {}
+    function setVoterRegistrationClosed() public onlyAdmin {}
 
-    function setProjectSubmissionClosed() public onlyOwner {}
+    function setProjectSubmissionOpen() public onlyAdmin {}
 
-    function setVotingOpen() public onlyOwner {}
+    function setProjectSubmissionClosed() public onlyAdmin {}
+
+    function setVotingOpen() public onlyAdmin {}
 
     // only allow if certain amount of time has passed
     // necessary if some registerd voters are no shows
-    function setVotingClosed() public onlyOwner {}
+    function setVotingClosed() public onlyAdmin {}
 
     // VOTERS
     function registerVoter() public payable {}
