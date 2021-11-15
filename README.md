@@ -43,7 +43,9 @@ Project tokens will be distributed to contributors and investors in a discrete p
 
 ### Contract
 
-Created with [Truffle suite](https://www.trufflesuite.com/docs/truffle/overview)
+Created with [Truffle suite](https://www.trufflesuite.com/docs/truffle/overview). Truffle requires Node v8.9.4 or higher.
+
+Install dependencies with `npm install`
 
 Run locally with `truffle develop`
 

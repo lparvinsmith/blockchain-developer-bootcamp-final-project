@@ -1,0 +1,16 @@
+{
+  "name": "@lparvinsmith/blockchain-developer-bootcamp-final-project",
+  "description": "Final project for Consensus Blockchain Bootcamp",
+  "scripts": {
+    "start": "truffle develop",
+    "test": "truffle test"
+  },
+  "author": "lparvinsmith",
+  "license": "MIT",
+  "devDependencies": {
+    "truffle": "^5.4.19"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.3"
+  }
+}
