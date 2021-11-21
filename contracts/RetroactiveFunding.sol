@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.5.16;
+pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
-contract RetroactiveFunding {
+contract RetroactiveFunding is AccessControlEnumerable {
 
     bytes32 public constant _admins = keccak256("_admins");
     bytes32 public constant _voters = keccak256("_voters");
@@ -17,7 +17,7 @@ contract RetroactiveFunding {
 
     mapping(address => uint256) public candidates;
     uint256 mostVotes;
-    address currentWinner;
+    address payable currentWinner;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "is not owner");
@@ -34,10 +34,8 @@ contract RetroactiveFunding {
         _;
     }
 
-    // fallback?
-
     // ADMIN
-    function setAdmin(address[] addresses) public onlyOwner {
+    function setAdmin(address[] calldata addresses) public onlyOwner {
         for (uint256 i = 0; i < addresses.length; ++i) {
             grantRole(_admins, addresses[i]);
         }
@@ -78,12 +76,13 @@ contract RetroactiveFunding {
 
     // VOTERS
     function registerVoter() public payable {
+        require(voterRegistrationOpen, 'voter registration not open');
         require(msg.value >= buyin, "value must not be less than buyin");
         grantRole(_voters, msg.sender);
     }
 
-    function vote(address candidateAddress) public onlyVoter {
-        require(candidates[candidateAddress], "candidate not found");
+    function vote(address payable candidateAddress) public onlyVoter {
+        require(votingOpen, 'voting is not open yet');
         candidates[candidateAddress] = candidates[candidateAddress] + 1;
         
         if (candidates[candidateAddress] > mostVotes) {
@@ -92,20 +91,20 @@ contract RetroactiveFunding {
         }
 
         revokeRole(_voters, msg.sender);
-        if (getRoleMemberCount(_voters) = 0) {
+        if (getRoleMemberCount(_voters) == 0) {
             payoutWinner();
         }
     }
 
     // CANDIDATES
     function registerCandidate() public {
-        require(!candidates[msg.sender], "candidate already registered");
+        require(projectSubmissionOpen, 'project submission not open');
+        require(candidates[msg.sender] != 0, "candidate already registered");
         candidates[msg.sender] = 0;
     }
 
     // PRIVATE
-    function payoutWinner() private {
-        require(!votingOpen, "voting must not be open");
+    function payoutWinner() private  {
         currentWinner.transfer(address(this).balance);
     }
 }

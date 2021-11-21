@@ -2,11 +2,16 @@
 
 ## Inheritance and interfaces
 
-This smart contract uses a Library (discussed below) with the [directive using A for B](https://docs.soliditylang.org/en/latest/contracts.html#using-for) to attach library functions (from the library A) to any type (B) in the context of a contract.
+The RetroactiveFunding smart contract inherits from a library that allows children to use role-based access control methods (discussed below). The contract uses `is` to derive from another contract, thereby accessing all internal functions and state variables.
 
 ## Role-based access control
 
-The smart contract uses Open Zepplin's [Roles library](https://docs.openzeppelin.com/contracts/2.x/api/access#Roles) for managing addresses assigned to a role. This lets the contract owner establish Admin users that may configure minimum buyin, voter registration open, and project submission open.
+The smart contract uses Open Zepplin's [Access library](https://docs.openzeppelin.com/contracts/4.x/api/access#AccessControlEnumerable) for managing addresses assigned to a role. This lets the contract owner establish the following roles:
+
+- Admin users that may configure minimum buyin, voter registration open, project submission open, and voting open.
+- Voters that may vote on a candidate. When they vote successfully, their membership to this role is revoked to enforce one vote.
+
+I used the Enumerable version so that payout can be triggered when the amount of registered voters reaches 0.
 
 ## Optimizing gas
 
