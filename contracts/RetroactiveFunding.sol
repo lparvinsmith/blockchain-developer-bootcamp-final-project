@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
 contract RetroactiveFunding is AccessControlEnumerable {
 
-    bytes32 public constant _admins = keccak256("_admins");
+    bytes32 public constant _admins = DEFAULT_ADMIN_ROLE;
     bytes32 public constant _voters = keccak256("_voters");
 
     address public owner = msg.sender;
@@ -18,6 +18,11 @@ contract RetroactiveFunding is AccessControlEnumerable {
     mapping(address => uint256) public candidates;
     uint256 mostVotes;
     address payable currentWinner;
+
+    constructor ()  {
+        _setupRole(_admins, owner);
+        grantRole(_admins, owner);
+    }
 
     modifier onlyOwner() {
         require(msg.sender == owner, "is not owner");

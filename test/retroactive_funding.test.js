@@ -2,6 +2,7 @@ let RetroactiveFunding = artifacts.require("RetroactiveFunding");
 
 contract("RetroactiveFunding", function (accounts) {
   const [_owner, alice, bob] = accounts;
+  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000";
 
   let instance;
 
@@ -11,16 +12,15 @@ contract("RetroactiveFunding", function (accounts) {
 
   describe("Admin", () => {
     it('should let owner set admin', async () => {
-      const tx = await instance.setAdmin([alice], {from: _owner})
-      let eventEmitted;
-      if (tx.logs[0].event == "RoleGranted") {
-        eventEmitted = true;
-      }
+      await instance.setAdmin([alice], {from: _owner})
+      
+      const hasRole = await RetroactiveFunding.hasRole(DEFAULT_ADMIN_ROLE, alice)
 
-      assert.equal(eventEmitted, true, 'adding admin should send RoleGranted event')
+      assert.equal(hasRole, true, 'address should be added to admin role')
     });
 
     it('should let admin update status variables', async () => {
+
 
     });
 
