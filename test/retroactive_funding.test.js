@@ -12,15 +12,20 @@ contract("RetroactiveFunding", function (accounts) {
 
   describe("Admin", () => {
     it('should let owner set admin', async () => {
-      await instance.setAdmin([alice], {from: _owner})
-      
-      const hasRole = await RetroactiveFunding.hasRole(DEFAULT_ADMIN_ROLE, alice)
+      const tx = await instance.setAdmin([alice], {from: _owner});
 
-      assert.equal(hasRole, true, 'address should be added to admin role')
+      const eventEmitted = tx.logs[0].event == "RoleGranted";
+     
+      assert.equal(eventEmitted, true, 'address should be added to admin role');
     });
 
     it('should let admin update status variables', async () => {
+      await instance.setAdmin([alice], {from: _owner});
+      await instance.setVoterRegistrationClosed({from: alice});
 
+      const result = await instance.voterRegistrationOpen();
+
+      assert.equal(result, false, 'admin should be able to set voterRegistrationOpen to false');
 
     });
 
