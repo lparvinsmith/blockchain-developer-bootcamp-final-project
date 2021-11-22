@@ -9,11 +9,11 @@ contract RetroactiveFunding is AccessControlEnumerable {
     bytes32 public constant _voters = keccak256("_voters");
 
     address public owner = msg.sender;
-    uint256 buyin;
+    uint256 public buyin;
 
-    bool voterRegistrationOpen = true;
-    bool projectSubmissionOpen = true;
-    bool votingOpen = false;
+    bool public voterRegistrationOpen = true;
+    bool public projectSubmissionOpen = true;
+    bool public votingOpen = false;
 
     mapping(address => uint256) public candidates;
     uint256 mostVotes;
