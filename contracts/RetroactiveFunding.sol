@@ -2,8 +2,10 @@
 pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract RetroactiveFunding is AccessControlEnumerable {
+contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
 
     bytes32 public constant _admins = DEFAULT_ADMIN_ROLE;
     bytes32 public constant _voters = keccak256("_voters");
@@ -19,9 +21,12 @@ contract RetroactiveFunding is AccessControlEnumerable {
     uint256 mostVotes;
     address payable currentWinner;
 
-    constructor ()  {
+    constructor (string memory name, string memory symbol) ERC721(name, symbol)   {
         _setupRole(_admins, owner);
-        grantRole(_admins, owner);
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControlEnumerable) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 
     modifier onlyOwner() {

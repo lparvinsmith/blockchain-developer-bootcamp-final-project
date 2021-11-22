@@ -2,12 +2,11 @@ let RetroactiveFunding = artifacts.require("RetroactiveFunding");
 
 contract("RetroactiveFunding", function (accounts) {
   const [_owner, alice, bob] = accounts;
-  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000";
 
   let instance;
 
   beforeEach(async () => {
-    instance = await RetroactiveFunding.new();
+    instance = await RetroactiveFunding.new('RetroVote', 'RETRO');
   });
 
   describe("Admin", () => {
@@ -29,6 +28,16 @@ contract("RetroactiveFunding", function (accounts) {
 
     });
 
+    it('should let admin update buyin', async () => {
+      await instance.setAdmin([alice], {from: _owner});
+      await instance.setBuyin(100, {from: alice});
+
+      const result = await instance.buyin();
+
+      assert.equal(result, 100, 'admin should be able to set buyin');
+
+    });
+
   });
 
   describe("Candidates", () => {
@@ -47,6 +56,10 @@ contract("RetroactiveFunding", function (accounts) {
   describe("Voting", () => {
 
     it('should let voters register themselves', async () => {
+
+    });
+
+    it('should require buyin to register voter', async () => {
 
     });
 
