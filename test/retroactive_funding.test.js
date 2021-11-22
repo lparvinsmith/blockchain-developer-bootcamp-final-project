@@ -34,6 +34,11 @@ contract("RetroactiveFunding", function (accounts) {
   describe("Candidates", () => {
 
     it('should let candidates register themselves', async () => {
+      await instance.registerCandidate({from: bob});
+
+      const candidateCount = await instance.candidates(bob);
+
+      assert.equal(candidateCount, 1, 'candiate should be added to mapping');
 
     });
 

@@ -104,8 +104,8 @@ contract RetroactiveFunding is AccessControlEnumerable {
     // CANDIDATES
     function registerCandidate() public {
         require(projectSubmissionOpen, 'project submission not open');
-        require(candidates[msg.sender] != 0, "candidate already registered");
-        candidates[msg.sender] = 0;
+        require(candidates[msg.sender] == 0, "candidate already registered");
+        candidates[msg.sender] = 1;
     }
 
     // PRIVATE
