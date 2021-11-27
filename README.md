@@ -13,7 +13,7 @@ Personal ETH Address for NFT: TODO
 
 ## Retroactive Public Goods Funding
 
-This project provides a template for communities to come together, establish a common problem, and establish incentives for entrepreneurs to solve the problem.
+This project provides a template for communities to come together, establish a common problem, and establish an incentive for entrepreneurs to solve the problem.
 
 Inspired by Vitalik Buterin's talk: "Things that matter outside of defi" ([Video](https://www.youtube.com/watch?v=oLsb7clrXMQ&t=308s), July 21, 2021)
 
@@ -23,11 +23,19 @@ For a large group of people, retrospective decisions are easier than prospective
 
 ### The DAO, or the Community
 
-The decentralized autonomous organization (DAO) is the contract that establishes the problem and formalizes the community members with voting power. During the formation of the DAO, members will contribute fees and receive voting power proportional to the amount they contribute. At the end of a specified term, the DAO members will vote on which project(s) were the most valuable, and buy up the project tokens.
+The decentralized autonomous organization (DAO) is the contract that establishes the problem and formalizes the community members with voting or administrative power. During the formation of the DAO, members will contribute a buyin and receive one vote. At the end of a specified term, the DAO members will vote on which project was the most valuable.
 
-### The Tokens, or the Incentive
+### The Creators, or Candidates
 
-Project tokens will be distributed to contributors and investors in a discrete project. This dapp will allow an entrepreneur to start a project, create project tokens, and raise funds by selling the tokens.
+Project creators can register their projects in the contract until project submissions are closed. Their project pitch and updates would be communicated in an external service like discord. When the voting is complete, the winner will receive the total contract value collected from the voter buyins.
+
+### The Voting Token, or NFT
+
+Voters who pay the appropriate buyin receive an NFT which allows them one vote on a candidate. They can sell this NFT if they lose interest in the DAO, and the buyer can assume voting rights.
+
+### Upcoming improvements
+
+The voter NFT minted is currently just a unique token with no metadata. In a future iteration, the contract owner would be able to configure a unique design for the NFT to increase the NFT's value as a collectible.
 
 ## Directory structure
 

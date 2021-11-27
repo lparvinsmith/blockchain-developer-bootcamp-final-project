@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
+contract RetroactiveFunding is AccessControl, ERC721 {
 
     bytes32 public constant _admins = DEFAULT_ADMIN_ROLE;
     bytes32 public constant _voters = keccak256("_voters");
+
+    using Counters for Counters.Counter; 
+    Counters.Counter private _tokenIds;
 
     address public owner = msg.sender;
     uint256 public buyin;
@@ -17,6 +20,7 @@ contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
     bool public projectSubmissionOpen = true;
     bool public votingOpen = false;
 
+    mapping(uint256 => bool) public tokenVoted;
     mapping(address => uint256) public candidates;
     uint256 mostVotes;
     address payable currentWinner;
@@ -25,7 +29,8 @@ contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
         _setupRole(_admins, owner);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControlEnumerable) returns (bool) {
+    // override shared function
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
@@ -88,11 +93,18 @@ contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
     function registerVoter() public payable {
         require(voterRegistrationOpen, 'voter registration not open');
         require(msg.value >= buyin, "value must not be less than buyin");
-        grantRole(_voters, msg.sender);
+
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+
+        _mint(msg.sender, newItemId);
     }
 
     function vote(address payable candidateAddress) public onlyVoter {
-        require(votingOpen, 'voting is not open yet');
+        require(votingOpen, 'voting is not open');
+        require(balanceOf(msg.sender) > 0, 'must have token to vote');
+        // TODO require token has not voted
+        
         candidates[candidateAddress] = candidates[candidateAddress] + 1;
         
         if (candidates[candidateAddress] > mostVotes) {
@@ -100,10 +112,14 @@ contract RetroactiveFunding is AccessControlEnumerable, ERC721 {
             currentWinner = candidateAddress;
         }
 
-        revokeRole(_voters, msg.sender);
-        if (getRoleMemberCount(_voters) == 0) {
-            payoutWinner();
-        }
+        // enforece 1 vote - take away ability to vote
+
+        // if total votes == amount of voters, payoutWinner
+        
+
+        // TODO when does voting end?
+        // 1. when admin closes voting,
+        // 2. count total number of voters and votes
     }
 
     // CANDIDATES
