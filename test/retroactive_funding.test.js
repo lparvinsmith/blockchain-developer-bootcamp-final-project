@@ -62,14 +62,34 @@ contract("RetroactiveFunding", function (accounts) {
       const eventEmitted = tx.logs[0].event == "Transfer";
      
       assert.equal(eventEmitted, true, 'minted token should be transfered');
-
     });
 
     it('should require buyin to register voter', async () => {
       await catchRevert(instance.registerVoter({from: alice}));
     });
 
-    it('should let voters vote once', async () => {
+    it('should not let non-token holders vote', async () => {
+      await instance.registerCandidate({from: bob});
+      await instance.setVotingOpen({from: _owner});
+      await catchRevert(instance.vote(bob, {from: bob}));
+    });
+
+    it('should update vote counts on vote', async () => {
+      await instance.registerVoter({from: alice, value: 10});
+      await instance.registerCandidate({from: bob});
+      await instance.setVotingOpen({from: _owner});
+      await instance.vote(bob, {from: alice});
+
+      const candidateCount = await instance.candidates(bob);
+      const mostVotes = await instance.mostVotes();
+      const currentWinner = await instance.currentWinner();
+
+      assert.equal(candidateCount, 2, 'vote should be counted');
+      assert.equal(mostVotes, 2, 'mostVotes should be updated');
+      assert.equal(currentWinner, bob, 'currentWinner should be updated');
+    });
+
+    it('should only let token holder vote once', async () => {
 
     });
 

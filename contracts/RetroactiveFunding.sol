@@ -22,8 +22,8 @@ contract RetroactiveFunding is AccessControl, ERC721 {
 
     mapping(uint256 => bool) public tokenVoted;
     mapping(address => uint256) public candidates;
-    uint256 mostVotes;
-    address payable currentWinner;
+    uint256 public mostVotes;
+    address payable public currentWinner;
 
     constructor (string memory name, string memory symbol, uint256 initBuyin) ERC721(name, symbol)   {
         _setupRole(_admins, owner);
@@ -42,11 +42,6 @@ contract RetroactiveFunding is AccessControl, ERC721 {
 
     modifier onlyAdmin() {
         require(hasRole(_admins, msg.sender), "does not have admin role");
-        _;
-    }
-
-    modifier onlyVoter() {
-        require(hasRole(_voters, msg.sender), "does not have voter role");
         _;
     }
 
@@ -79,10 +74,6 @@ contract RetroactiveFunding is AccessControl, ERC721 {
     }
 
     function setVotingOpen() public onlyAdmin {
-        require(
-            !projectSubmissionOpen && !voterRegistrationOpen,
-            "voter registration and project submission must not be open"
-        );
         votingOpen = true;
     }
 
@@ -94,6 +85,7 @@ contract RetroactiveFunding is AccessControl, ERC721 {
     function registerVoter() public payable {
         require(voterRegistrationOpen, 'voter registration not open');
         require(msg.value >= buyin, "value must not be less than buyin");
+        require(balanceOf(msg.sender) == 0, 'must not be registered already');
 
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
@@ -101,7 +93,7 @@ contract RetroactiveFunding is AccessControl, ERC721 {
         _mint(msg.sender, newItemId);
     }
 
-    function vote(address payable candidateAddress) public onlyVoter {
+    function vote(address payable candidateAddress) public {
         require(votingOpen, 'voting is not open');
         require(balanceOf(msg.sender) > 0, 'must have token to vote');
         // TODO require token has not voted
@@ -114,6 +106,7 @@ contract RetroactiveFunding is AccessControl, ERC721 {
         }
 
         // enforece 1 vote - take away ability to vote
+        
 
         // if total votes == amount of voters, payoutWinner
         
