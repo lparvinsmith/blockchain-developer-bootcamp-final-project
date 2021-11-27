@@ -2,7 +2,12 @@
 
 ## Inheritance and interfaces
 
-The RetroactiveFunding smart contract inherits from a contract that allows children to use role-based access control methods (discussed below). The contract uses `is` to derive from another contract, thereby accessing all internal functions and state variables.
+The RetroactiveFunding smart contract inherits from two OpenZeppelin contracts. This contract uses `is` to derive from the other contracts, thereby accessing all internal functions and state variables.
+
+1. Access Control
+2. ERC721 Enumerable
+
+It also uses a library called Counters which is access with the keyword `using`.
 
 ## Role-based access control
 

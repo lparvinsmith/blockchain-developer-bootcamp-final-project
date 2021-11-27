@@ -4,8 +4,9 @@ pragma solidity ^0.8.10;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract RetroactiveFunding is AccessControl, ERC721 {
+contract RetroactiveFunding is AccessControl, ERC721Enumerable {
 
     bytes32 public constant _admins = DEFAULT_ADMIN_ROLE;
     bytes32 public constant _voters = keccak256("_voters");
@@ -31,7 +32,7 @@ contract RetroactiveFunding is AccessControl, ERC721 {
     }
 
     // override shared function
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControl) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Enumerable, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
@@ -96,7 +97,7 @@ contract RetroactiveFunding is AccessControl, ERC721 {
     function vote(address payable candidateAddress) public {
         require(votingOpen, 'voting is not open');
         require(balanceOf(msg.sender) > 0, 'must have token to vote');
-        // TODO require token has not voted
+        require(!tokenVoted[tokenOfOwnerByIndex(msg.sender, 0)], 'must not have used token to vote already');
         
         candidates[candidateAddress] = candidates[candidateAddress] + 1;
         
@@ -105,8 +106,8 @@ contract RetroactiveFunding is AccessControl, ERC721 {
             currentWinner = candidateAddress;
         }
 
-        // enforece 1 vote - take away ability to vote
-        
+        // enforece 1 vote per token - take away ability to vote
+        tokenVoted[tokenOfOwnerByIndex(msg.sender, 0)] = true;
 
         // if total votes == amount of voters, payoutWinner
         

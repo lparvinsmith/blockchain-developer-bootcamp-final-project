@@ -1,13 +1,15 @@
 let RetroactiveFunding = artifacts.require("RetroactiveFunding");
 let { catchRevert } = require("./exceptionsHelpers.js");
 
+const DEFAULT_BUYIN = 10;
+
 contract("RetroactiveFunding", function (accounts) {
   const [_owner, alice, bob] = accounts;
 
   let instance;
 
   beforeEach(async () => {
-    instance = await RetroactiveFunding.new('RetroVote', 'RETRO', 10);
+    instance = await RetroactiveFunding.new('RetroVote', 'RETRO', DEFAULT_BUYIN);
   });
 
   describe("Admin", () => {
@@ -57,7 +59,7 @@ contract("RetroactiveFunding", function (accounts) {
   describe("Voting", () => {
 
     it('should let voters register themselves', async () => {
-      const tx = await instance.registerVoter({from: alice, value: 10});
+      const tx = await instance.registerVoter({from: alice, value: DEFAULT_BUYIN});
       
       const eventEmitted = tx.logs[0].event == "Transfer";
      
@@ -75,7 +77,7 @@ contract("RetroactiveFunding", function (accounts) {
     });
 
     it('should update vote counts on vote', async () => {
-      await instance.registerVoter({from: alice, value: 10});
+      await instance.registerVoter({from: alice, value: DEFAULT_BUYIN});
       await instance.registerCandidate({from: bob});
       await instance.setVotingOpen({from: _owner});
       await instance.vote(bob, {from: alice});
@@ -90,7 +92,11 @@ contract("RetroactiveFunding", function (accounts) {
     });
 
     it('should only let token holder vote once', async () => {
-
+      await instance.registerVoter({from: alice, value: DEFAULT_BUYIN});
+      await instance.registerCandidate({from: bob});
+      await instance.setVotingOpen({from: _owner});
+      await instance.vote(bob, {from: alice});
+      await catchRevert(instance.vote(bob, {from: alice}));
     });
 
     it('should payout the winner', async () => {
