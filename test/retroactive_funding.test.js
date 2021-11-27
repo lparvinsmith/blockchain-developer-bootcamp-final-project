@@ -1,4 +1,5 @@
 let RetroactiveFunding = artifacts.require("RetroactiveFunding");
+let { catchRevert } = require("./exceptionsHelpers.js");
 
 contract("RetroactiveFunding", function (accounts) {
   const [_owner, alice, bob] = accounts;
@@ -56,11 +57,16 @@ contract("RetroactiveFunding", function (accounts) {
   describe("Voting", () => {
 
     it('should let voters register themselves', async () => {
+      const tx = await instance.registerVoter({from: alice, value: 10});
+      
+      const eventEmitted = tx.logs[0].event == "Transfer";
+     
+      assert.equal(eventEmitted, true, 'minted token should be transfered');
 
     });
 
     it('should require buyin to register voter', async () => {
-
+      await catchRevert(instance.registerVoter({from: alice}));
     });
 
     it('should let voters vote once', async () => {
