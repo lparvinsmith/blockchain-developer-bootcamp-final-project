@@ -6,7 +6,7 @@ contract("RetroactiveFunding", function (accounts) {
   let instance;
 
   beforeEach(async () => {
-    instance = await RetroactiveFunding.new('RetroVote', 'RETRO');
+    instance = await RetroactiveFunding.new('RetroVote', 'RETRO', 10);
   });
 
   describe("Admin", () => {

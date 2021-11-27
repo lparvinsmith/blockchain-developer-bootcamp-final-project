@@ -25,8 +25,9 @@ contract RetroactiveFunding is AccessControl, ERC721 {
     uint256 mostVotes;
     address payable currentWinner;
 
-    constructor (string memory name, string memory symbol) ERC721(name, symbol)   {
+    constructor (string memory name, string memory symbol, uint256 initBuyin) ERC721(name, symbol)   {
         _setupRole(_admins, owner);
+        setBuyin(initBuyin);
     }
 
     // override shared function
