@@ -1,9 +1,12 @@
 # blockchain-developer-bootcamp-final-project
 
 Final project for Consensus Blockchain Bootcamp
-Frontend deployed here: TODO
-Demo video here: TODO
-Personal ETH Address for NFT: TODO
+
+- Frontend deployed here: TODO
+- Demo video here: TODO
+- Personal ETH Address for NFT: TODO
+
+Contents
 
 - [Retroactive public goods funding](#retroactive-public-goods-funding)
 - [Directory structure](#directory-structure)

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.10;
+pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract RetroactiveFunding is AccessControl, ERC721Enumerable {
@@ -145,6 +144,5 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
     function payoutWinner() private  {
         currentWinner.transfer(address(this).balance);
         emit WinnerPaid(currentWinner, address(this).balance);
-        setVotingClosed();
     }
 }
