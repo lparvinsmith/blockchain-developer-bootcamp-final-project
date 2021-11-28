@@ -49,7 +49,7 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
 
     event CandidateRegistered(address candidateAddress);
 
-    event WinnerPaid(address winnerAddress, uint256 totalWinnings);
+    event WeHaveAWinner(address winnerAddress, uint256 totalWinnings);
 
     // Receive ether function is executed on a call to the contract with empty calldata.
     receive() external payable {}
@@ -141,8 +141,8 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
     }
 
     // PRIVATE
-    function payoutWinner() private  {
+    function payoutWinner() private {
+        emit WeHaveAWinner(currentWinner, address(this).balance);
         currentWinner.transfer(address(this).balance);
-        emit WinnerPaid(currentWinner, address(this).balance);
     }
 }

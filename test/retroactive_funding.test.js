@@ -1,7 +1,7 @@
-let RetroactiveFunding = artifacts.require("RetroactiveFunding");
-let { catchRevert } = require("./exceptionsHelpers.js");
+const RetroactiveFunding = artifacts.require("RetroactiveFunding");
+const { catchRevert } = require("./exceptionsHelpers.js");
 
-const DEFAULT_BUYIN = 10;
+const DEFAULT_BUYIN = web3.utils.toBN(10**10);
 
 contract("RetroactiveFunding", function (accounts) {
   const [_owner, alice, bob] = accounts;
@@ -100,7 +100,18 @@ contract("RetroactiveFunding", function (accounts) {
     });
 
     it('should payout the winner', async () => {
+      await instance.registerVoter({from: alice, value: DEFAULT_BUYIN});
+      await instance.registerCandidate({from: bob});
+      await instance.setVoterRegistrationClosed({from: _owner});
+      await instance.setVotingOpen({from: _owner});
 
+      const bobBalanceBefore = await web3.eth.getBalance(bob);
+      const tx = await instance.vote(bob, {from: alice});
+      const eventEmitted = tx.logs[0].event == "WeHaveAWinner";
+      const bobBalanceAfter = await web3.eth.getBalance(bob);
+     
+      assert.equal(eventEmitted, true, 'payout should fire event');
+      assert.isAbove(Number(bobBalanceAfter), Number(bobBalanceBefore), 'winner should get total contract balance');
     });
 
   })
