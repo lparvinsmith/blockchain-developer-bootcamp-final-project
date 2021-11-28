@@ -3,6 +3,7 @@
 Final project for Consensus Blockchain Bootcamp
 
 - Frontend deployed here: TODO
+- Contract deployed here: https://rinkeby.etherscan.io/address/0xaceb4dab6f366e57c3368584372ea6fa2781522f
 - Demo video here: TODO
 - Personal ETH Address for NFT: TODO
 
@@ -56,7 +57,7 @@ The voter NFT minted is currently just a unique token with no metadata. In a fut
 
 Created with [Truffle suite](https://www.trufflesuite.com/docs/truffle/overview). Truffle requires Node v8.9.4 or higher.
 
-Install dependencies with `npm install`
+Install dependencies with `yarn` or `npm install`
 
 Run locally with `truffle develop`
 
@@ -68,6 +69,6 @@ Created with [Create React App](https://create-react-app.dev)
 
 From the /client directory, run the following commands:
 
-Install dependencies with `npm install`
+Install dependencies with `yarn` (preferred) or `npm install`
 
-Run locally with `npm start`
+Run locally with `yarn start` or `npm start`
