@@ -5,6 +5,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
+/// @title A Retroactive Funding DAO
+/// @author Lara Parvinsmith
+/// @notice You can use this contract to setup and govern a DAO
+/// where funders receive an NFT that lets them vote on a project candidate
+/// @dev Everything should be public except for function payoutWinner
 contract RetroactiveFunding is AccessControl, ERC721Enumerable {
 
     bytes32 public constant _admins = DEFAULT_ADMIN_ROLE;
@@ -30,7 +35,7 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
         setBuyin(initBuyin);
     }
 
-    // override shared function
+    /// @dev overrides shared function inherited from both contracts
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Enumerable, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
@@ -40,6 +45,8 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
         _;
     }
 
+    /// @notice validates whether user has Admin role
+    /// @dev uses AcessControl hasRole
     modifier onlyAdmin() {
         require(hasRole(_admins, msg.sender), "does not have admin role");
         _;
@@ -51,53 +58,71 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
 
     event WeHaveAWinner(address winnerAddress, uint256 totalWinnings);
 
-    // Receive ether function is executed on a call to the contract with empty calldata.
+    /// @notice allows contract to receive ether
+    /// @dev function is executed on a call to the contract with empty calldata
     receive() external payable {}
 
-    // Fallback function is executed on a call to the contract
-    // if none of the other functions match the given function signature,
-    // or if no data was supplied at all and there is no receive Ether function
+    /// @notice revert transaction and refund remaining gas
+    /// @dev Fallback function is executed on a call to the contract
+    /// if none of the other functions match the given function signature
     fallback() external payable {
         revert();
     }
 
     // ADMIN
+
+    /// @notice allows owner to grant other users admin privileges
+    /// @dev uses AccessControl grantRole function
+    /// @param addresses list of user's addresses to become admin
     function setAdmin(address[] calldata addresses) public onlyOwner {
         for (uint256 i = 0; i < addresses.length; ++i) {
             grantRole(_admins, addresses[i]);
         }
     }
 
+    /// @notice allows admin to change buyin
+    /// @param amount in wei
     function setBuyin(uint256 amount) public onlyAdmin {
         require(amount > 0, "buyin must be greater than 0");
         buyin = amount;
     }
 
+    /// @notice allows admin to set voterRegistrationOpen
     function setVoterRegistrationOpen() public onlyAdmin {
         voterRegistrationOpen = true;
     }
 
+    /// @notice allows admin to set voterRegistrationOpen
     function setVoterRegistrationClosed() public onlyAdmin {
         voterRegistrationOpen = false;
     }
 
+    /// @notice allows admin to set projectSubmissionOpen
     function setProjectSubmissionOpen() public onlyAdmin {
         projectSubmissionOpen = true;
     }
 
+    /// @notice allows admin to set projectSubmissionOpen
     function setProjectSubmissionClosed() public onlyAdmin {
         projectSubmissionOpen = false;
     }
 
+    /// @notice allows admin to set votingOpen
     function setVotingOpen() public onlyAdmin {
         votingOpen = true;
     }
 
-    // only allow if certain amount of time has passed
-    // necessary if some registerd voters are no shows
+    /// @notice allow admin to trigger payout
+    /// only allow if certain amount of time has passed
+    /// necessary if some registerd voters are no shows
+    /// @dev TODO
     function setVotingClosed() public onlyAdmin {}
 
     // VOTERS
+
+    /// @notice allows a user to buyin and mint voter NFT
+    /// @dev uses ERC721 to _mint an NFT and send to user
+    /// and Countable to increment _tokenIds
     function registerVoter() public payable {
         require(voterRegistrationOpen, 'voter registration not open');
         require(msg.value >= buyin, "value must not be less than buyin");
@@ -110,6 +135,11 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
         emit VoterRegistered(msg.sender, address(this).balance);
     }
 
+    /// @notice allows a user with a token to vote on one candidate
+    /// @dev uses ERC721 balanceOf to determine whether user has token
+    /// and ERC721Enumerable to get tokenId via tokenOfOwnerByIndex
+    /// to add to tokenVoted mapping to enforce 1 vote per token.
+    /// @param candidateAddress is the address user wants to vote for
     function vote(address payable candidateAddress) public {
         require(votingOpen, 'voting is not open');
         require(balanceOf(msg.sender) > 0, 'must have token to vote');
@@ -133,6 +163,8 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
     }
 
     // CANDIDATES
+
+    /// @notice allows a user to register as candidate, starts vote count at 1
     function registerCandidate() public {
         require(projectSubmissionOpen, 'project submission not open');
         require(candidates[msg.sender] == 0, "candidate already registered");
@@ -141,6 +173,10 @@ contract RetroactiveFunding is AccessControl, ERC721Enumerable {
     }
 
     // PRIVATE
+
+    /// @notice triggers winner announcement and payout.
+    /// the whole contract balance is transfered.
+    /// deployed contract may be used again for a new round, or discarded
     function payoutWinner() private {
         emit WeHaveAWinner(currentWinner, address(this).balance);
         currentWinner.transfer(address(this).balance);
