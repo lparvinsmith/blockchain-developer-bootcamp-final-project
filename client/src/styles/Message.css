@@ -1,0 +1,21 @@
+.Message-text {
+  animation-duration: 2s;
+  animation-name: fadeIn;
+}
+
+.success {
+  color: #3f826d;
+}
+
+.error {
+  color: #c03221;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
