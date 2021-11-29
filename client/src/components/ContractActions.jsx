@@ -1,6 +1,7 @@
 import { AdminActions } from "./AdminActions";
 import { CandidateActions } from "./CandidateActions";
 import { VoterActions } from "./VoterActions";
+import "../styles/ContractActions.css";
 
 export const ContractActions = () => {
   const isAdmin = true;
