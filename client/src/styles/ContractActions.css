@@ -8,6 +8,8 @@
 .ContractActions-title {
   font-weight: 600;
   cursor: pointer;
+  padding: 16px 0;
+  border-bottom: 1px solid grey;
 }
 
 .ContractActions-body {
