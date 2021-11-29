@@ -1,17 +1,20 @@
-import './styles/App.css';
-import { RegisterVoter } from './components/RegisterVoter';
-import { EthereumProvider } from './context/EthereumContext';
-import { WalletStatus } from './components/WalletStatus';
-import { ContractProvider } from './context/ContractContext';
+import "./styles/App.css";
+import { RegisterVoter } from "./components/RegisterVoter";
+import { EthereumProvider } from "./context/EthereumContext";
+import { WalletStatus } from "./components/WalletStatus";
+import { ContractProvider } from "./context/ContractContext";
+import { AccountProvider } from "./context/AccountContext";
 
 function App() {
   return (
     <div className="App">
       <EthereumProvider>
-        <WalletStatus />
-        <ContractProvider>
-          <RegisterVoter />
-        </ContractProvider>
+        <AccountProvider>
+          <WalletStatus />
+          <ContractProvider>
+            <RegisterVoter />
+          </ContractProvider>
+        </AccountProvider>
       </EthereumProvider>
     </div>
   );
