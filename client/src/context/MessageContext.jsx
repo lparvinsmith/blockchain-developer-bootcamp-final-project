@@ -11,7 +11,6 @@ export const MessageProvider = ({ children }) => {
   const [message, setMessage] = useState(undefined);
 
   const addMessage = (text, type) => {
-    console.log("setting", text, type);
     setMessage({ text, type });
     setTimeout(() => {
       setMessage(undefined);

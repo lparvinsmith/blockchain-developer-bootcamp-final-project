@@ -4,7 +4,6 @@ import "../styles/Message.css";
 
 export const Message = () => {
   const { message } = useContext(MessageContext);
-  console.log("got message", message);
 
   return (
     <div className="Message">
