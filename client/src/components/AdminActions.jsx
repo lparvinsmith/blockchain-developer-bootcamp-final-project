@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "./Button";
 import { TextInput } from "./TextInput";
 import { useBuyin } from "../hooks/useBuyin";
 import { useVotingOpen, useUpdateVotingOpen } from "../hooks/useVotingOpen";
+import { MessageContext } from "../context/MessageContext";
 
 export const AdminActions = () => {
   const [show, setShow] = useState(false);
   const buyin = useBuyin();
   const votingOpen = useVotingOpen();
   const updateVotingOpen = useUpdateVotingOpen();
+  const { addMessage } = useContext(MessageContext);
+
+  const handleTODOMessage = () => {
+    addMessage("Coming soon! This is a work in progress");
+  };
 
   const handleUpdateVoting = () => {
     updateVotingOpen();
@@ -24,13 +30,17 @@ export const AdminActions = () => {
           <div className="ContractActions-action">
             <div className="ContractActions-label">{`Current buyin: ${buyin} wei`}</div>
             <TextInput placeholder="update amount in wei" />
-            <Button>Update</Button>
+            <Button onClick={handleTODOMessage}>Update</Button>
           </div>
           <div className="ContractActions-action">
-            <Button>Close voter registration</Button>
+            <Button onClick={handleTODOMessage}>
+              Close voter registration
+            </Button>
           </div>
           <div className="ContractActions-action">
-            <Button>Close candidate registration</Button>
+            <Button onClick={handleTODOMessage}>
+              Close candidate registration
+            </Button>
           </div>
           <div className="ContractActions-action">
             <div className="ContractActions-label">

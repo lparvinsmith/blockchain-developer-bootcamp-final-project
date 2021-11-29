@@ -5,6 +5,11 @@ import {
   useRegisterCandidate,
 } from "../hooks/useRegisterCandidate";
 
+// TODO an improvement would be to list registered candidates.
+// however, as they're currently stored in a mapping in the contract
+// they are not inumerable. solutions could be additionally storing them
+// in a public array or in an offchain DB
+
 export const CandidateActions = () => {
   const [show, setShow] = useState(false);
   const registrationOpen = useCandidateRegistrationOpen();

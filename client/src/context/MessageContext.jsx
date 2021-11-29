@@ -14,7 +14,7 @@ export const MessageProvider = ({ children }) => {
     setMessage({ text, type });
     setTimeout(() => {
       setMessage(undefined);
-    }, 10000);
+    }, 5000);
   };
 
   return (

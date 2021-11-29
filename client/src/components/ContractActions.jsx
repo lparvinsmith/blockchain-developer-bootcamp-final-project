@@ -4,13 +4,13 @@ import { VoterActions } from "./VoterActions";
 import "../styles/ContractActions.css";
 
 export const ContractActions = () => {
+  // TODO add getIsAdmin to contract
   const isAdmin = true;
-  const showVoterActions = true;
 
   return (
     <div className="ContractActions">
       {isAdmin && <AdminActions />}
-      {showVoterActions && <VoterActions />}
+      <VoterActions />
       <CandidateActions />
     </div>
   );
