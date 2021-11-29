@@ -1,9 +1,9 @@
 import "./styles/App.css";
-import { RegisterVoter } from "./components/RegisterVoter";
 import { EthereumProvider } from "./context/EthereumContext";
 import { WalletStatus } from "./components/WalletStatus";
 import { ContractProvider } from "./context/ContractContext";
 import { AccountProvider } from "./context/AccountContext";
+import { ContractActions } from "./components/ContractActions";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           </div>
           <div className="App-body">
             <ContractProvider>
-              <RegisterVoter />
+              <ContractActions />
             </ContractProvider>
           </div>
         </AccountProvider>
