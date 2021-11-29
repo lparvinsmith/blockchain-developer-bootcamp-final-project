@@ -1,0 +1,10 @@
+.WalletStatus {
+  margin-right: 16px;
+}
+
+.WalletStatus-message {
+  border: 2px solid #337689;
+  border-radius: 20px;
+  padding: 16px;
+  font-size: 16px;
+}

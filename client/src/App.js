@@ -10,10 +10,15 @@ function App() {
     <div className="App">
       <EthereumProvider>
         <AccountProvider>
-          <WalletStatus />
-          <ContractProvider>
-            <RegisterVoter />
-          </ContractProvider>
+          <div className="App-header">
+            <div className="App-title">Retroactive Funding DAO 🕺</div>
+            <WalletStatus />
+          </div>
+          <div className="App-body">
+            <ContractProvider>
+              <RegisterVoter />
+            </ContractProvider>
+          </div>
         </AccountProvider>
       </EthereumProvider>
     </div>

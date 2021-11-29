@@ -1,5 +1,8 @@
 import { useContext, useState } from "react";
 import { AccountContext } from "../context/AccountContext";
+import { truncateAddress } from "../utils/truncateAddress";
+import { Button } from "./Button";
+import "../styles/WalletStatus.css";
 
 export const WalletStatus = () => {
   const { account, setAccount } = useContext(AccountContext);
@@ -21,12 +24,20 @@ export const WalletStatus = () => {
   };
 
   if (account) {
-    return <div>{`Wallet ${account} connected`}</div>;
+    return (
+      <div className="WalletStatus">
+        <div className="WalletStatus-message">
+          {`Wallet ${truncateAddress(account)} connected`}
+        </div>
+      </div>
+    );
   } else {
     return (
-      <button onClick={handleConnect} disabled={loading}>
-        Connect your wallet
-      </button>
+      <div className="WalletStatus">
+        <Button onClick={handleConnect} disabled={loading}>
+          Connect your wallet
+        </Button>
+      </div>
     );
   }
 };
