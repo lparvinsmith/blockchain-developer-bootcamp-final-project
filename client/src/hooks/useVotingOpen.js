@@ -1,23 +1,23 @@
 import { useContext, useState } from "react";
 import { ContractContext } from "../context/ContractContext";
 
-export const useBuyin = () => {
+export const useVotingOpen = () => {
   const { contract } = useContext(ContractContext);
-  const [buyin, setBuyin] = useState("");
-  contract.buyin().then((result) => setBuyin(result.toString()));
+  const [votingOpen, setVotingOpen] = useState(false);
+  contract.votingOpen().then((result) => setVotingOpen(result));
 
-  return buyin;
+  return votingOpen;
 };
 
-export const useUpdateBuyin = () => {
+export const useUpdateVotingOpen = () => {
   const { contract } = useContext(ContractContext);
 
-  const updateBuyin = (amount) => {
+  const updateVotingOpen = () => {
     contract
-      .setBuyin(amount)
+      .setVotingOpen()
       .then((result) => console.log("result", result))
       .catch((err) => console.log("error", err));
   };
 
-  return updateBuyin;
+  return updateVotingOpen;
 };

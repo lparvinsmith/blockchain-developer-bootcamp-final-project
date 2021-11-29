@@ -14,12 +14,8 @@ const CONTRACT_ADDRESS = "0xaceb4dab6f366e57c3368584372ea6fa2781522f";
 export const ContractContext = createContext(undefined);
 
 export const ContractProvider = ({ children }) => {
-  const { provider } = useContext(EthereumContext);
-  const contract = new ethers.Contract(
-    CONTRACT_ADDRESS,
-    ContractData,
-    provider
-  );
+  const { signer } = useContext(EthereumContext);
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, ContractData, signer);
 
   return (
     <ContractContext.Provider value={{ contract }}>

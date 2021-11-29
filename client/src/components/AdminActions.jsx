@@ -2,10 +2,17 @@ import { useState } from "react";
 import { Button } from "./Button";
 import { TextInput } from "./TextInput";
 import { useBuyin } from "../hooks/useBuyin";
+import { useVotingOpen, useUpdateVotingOpen } from "../hooks/useVotingOpen";
 
 export const AdminActions = () => {
   const [show, setShow] = useState(false);
   const buyin = useBuyin();
+  const votingOpen = useVotingOpen();
+  const updateVotingOpen = useUpdateVotingOpen();
+
+  const handleUpdateVoting = () => {
+    updateVotingOpen();
+  };
 
   return (
     <div className="AdminActions">
@@ -26,7 +33,10 @@ export const AdminActions = () => {
             <Button>Close candidate registration</Button>
           </div>
           <div className="ContractActions-action">
-            <Button>Open voting</Button>
+            <div className="ContractActions-label">
+              {`Voting is ${votingOpen ? "" : "not "}open`}
+            </div>
+            <Button onClick={handleUpdateVoting}>Open voting</Button>
           </div>
         </div>
       )}
