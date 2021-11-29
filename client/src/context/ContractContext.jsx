@@ -3,13 +3,19 @@ import { createContext, useContext } from "react";
 import { EthereumContext } from "./EthereumContext";
 import ContractData from '../contracts/RetroactiveFunding.json'
 
-const CONTRACT_ADDRESS = '0x06473e23ad61430DBd86d4602AeF967AdE4Dc62B';
+// deployed on Rinkeby
+const CONTRACT_ADDRESS = '0xaceb4dab6f366e57c3368584372ea6fa2781522f';
+
+/* 
+  This context uses ethers to find the contract on the blockchain and
+  stores the contract and its methods for user interaction
+*/
 
 export const ContractContext = createContext(undefined);
 
 export const ContractProvider = ({children}) => {
   const {provider} = useContext(EthereumContext);
-  const contract = new ethers.Contract(CONTRACT_ADDRESS, ContractData.abi, provider);
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, ContractData, provider);
   console.log('contract', contract);
 
   return (
