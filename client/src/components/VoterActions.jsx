@@ -3,6 +3,7 @@ import { Button } from "./Button";
 import { TextInput } from "./TextInput";
 import { useBuyin } from "../hooks/useBuyin";
 import { useVotingOpen } from "../hooks/useVotingOpen";
+import { useVoterRegistrationOpen } from "../hooks/useVoterRegistrationOpen";
 import { useRegisterVoter, useVote } from "../hooks/useVoterActions";
 import { MessageContext } from "../context/MessageContext";
 import { ethers } from "ethers";
@@ -11,6 +12,7 @@ export const VoterActions = () => {
   const [show, setShow] = useState(false);
   const [candidate, setCandidate] = useState("");
   const buyin = useBuyin();
+  const voterRegistrationOpen = useVoterRegistrationOpen();
   const votingOpen = useVotingOpen();
   const registerVoter = useRegisterVoter();
   const voteForAddress = useVote();
@@ -41,12 +43,14 @@ export const VoterActions = () => {
       </div>
       {show && (
         <div className="ContractActions-body">
-          <div className="ContractActions-action">
-            <div className="ContractActions-label">
-              {`Voter NFT costs ${buyin} wei`}
+          {voterRegistrationOpen && (
+            <div className="ContractActions-action">
+              <div className="ContractActions-label">
+                {`Voter NFT costs ${buyin} wei`}
+              </div>
+              <Button onClick={handleMint}>Mint voter NFT</Button>
             </div>
-            <Button onClick={handleMint}>Mint voter NFT</Button>
-          </div>
+          )}
           {votingOpen && (
             <div className="ContractActions-action">
               <div className="ContractActions-label">Vote for a project</div>

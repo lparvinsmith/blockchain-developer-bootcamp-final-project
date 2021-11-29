@@ -4,16 +4,30 @@ import { TextInput } from "./TextInput";
 import { useBuyin } from "../hooks/useBuyin";
 import { useVotingOpen, useUpdateVotingOpen } from "../hooks/useVotingOpen";
 import { MessageContext } from "../context/MessageContext";
+import {
+  useUpdateVoterRegistrationClosed,
+  useVoterRegistrationOpen,
+} from "../hooks/useVoterRegistrationOpen";
+
+// TODO not all admin actions are hooked up.
+// Still considering the best way to manage the DAO's statuses,
+// eg. registrations open, voting open.
 
 export const AdminActions = () => {
   const [show, setShow] = useState(false);
   const buyin = useBuyin();
   const votingOpen = useVotingOpen();
   const updateVotingOpen = useUpdateVotingOpen();
+  const voterRegistrationOpen = useVoterRegistrationOpen();
+  const updateVoterRegistration = useUpdateVoterRegistrationClosed();
   const { addMessage } = useContext(MessageContext);
 
   const handleTODOMessage = () => {
     addMessage("Coming soon! This is a work in progress");
+  };
+
+  const handleUpdateVoterRegistration = () => {
+    updateVoterRegistration();
   };
 
   const handleUpdateVoting = () => {
@@ -33,7 +47,12 @@ export const AdminActions = () => {
             <Button onClick={handleTODOMessage}>Update</Button>
           </div>
           <div className="ContractActions-action">
-            <Button onClick={handleTODOMessage}>
+            <div className="ContractActions-label">
+              {`Voter registration is ${
+                voterRegistrationOpen ? "" : "not "
+              }open`}
+            </div>
+            <Button onClick={handleUpdateVoterRegistration}>
               Close voter registration
             </Button>
           </div>
