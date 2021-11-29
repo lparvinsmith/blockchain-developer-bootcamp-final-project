@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button } from "./Button";
 import { TextInput } from "./TextInput";
+import { useBuyin } from "../hooks/useBuyin";
 
 export const AdminActions = () => {
   const [show, setShow] = useState(false);
+  const buyin = useBuyin();
 
   return (
     <div className="AdminActions">
@@ -13,8 +15,8 @@ export const AdminActions = () => {
       {show && (
         <div className="ContractActions-body">
           <div className="ContractActions-action">
-            <div className="ContractActions-label">Set buyin amount</div>
-            <TextInput placeholder="amount in wei" />
+            <div className="ContractActions-label">{`Current buyin: ${buyin} wei`}</div>
+            <TextInput placeholder="update amount in wei" />
             <Button>Update</Button>
           </div>
           <div className="ContractActions-action">

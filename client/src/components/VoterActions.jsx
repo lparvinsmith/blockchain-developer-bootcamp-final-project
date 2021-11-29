@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "./Button";
 import { TextInput } from "./TextInput";
+import { useBuyin } from "../hooks/useBuyin";
 
 export const VoterActions = () => {
   const [show, setShow] = useState(false);
-  const buyin = 50000;
+  const buyin = useBuyin();
 
   return (
     <div>
@@ -14,7 +15,9 @@ export const VoterActions = () => {
       {show && (
         <div className="ContractActions-body">
           <div className="ContractActions-action">
-            <div className="ContractActions-label">{`Voter registration NFT costs ${buyin}`}</div>
+            <div className="ContractActions-label">
+              {`Voter NFT costs ${buyin} wei`}
+            </div>
             <Button>Mint voter NFT</Button>
           </div>
           <div className="ContractActions-action">
