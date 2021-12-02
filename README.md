@@ -5,7 +5,7 @@ Final project for Consensus Blockchain Bootcamp
 - Frontend deployed here: https://lparvinsmith.github.io/blockchain-developer-bootcamp-final-project/
 - Contract deployed here: https://rinkeby.etherscan.io/address/0xaceb4dab6f366e57c3368584372ea6fa2781522f
 - Demo video here: https://drive.google.com/file/d/1N3BNaSCJjGq0yLZaGhKC3AUCUFls9zfh
-- Personal ETH Address for NFT: 0xdef9f775b9b2f77aaccd3caa6a55343f30c28174
+- Personal ETH Address for NFT: 0xDef9f775b9b2F77aaccd3Caa6A55343f30C28174
 
 Contents
 
